@@ -3,16 +3,17 @@ require("dotenv").config();
 
 const express = require("express");
 const session = require("express-session");
+const connectPgSimple = require("connect-pg-simple");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const path = require("path");
-const db = require("./database");
+const pool = require("./postgres");
 
 const app = express();
 
 // =====================================
-// CONFIGURATION
+// UCS ACADEMY - CONFIGURATION
 // =====================================
 
 const PORT = process.env.PORT || 3000;
@@ -23,22 +24,18 @@ const JAAS_PRIVATE_KEY_PATH = process.env.JAAS_PRIVATE_KEY_PATH;
 
 const ALLOWED_CLASSES = ["9", "10", "11", "12"];
 
-// =====================================
-// ENVIRONMENT VALIDATION
-// =====================================
-
 if (!SESSION_SECRET || SESSION_SECRET.length < 64) {
-    console.error("ERROR: SESSION_SECRET missing or too short in .env");
+    console.error("ERROR: SESSION_SECRET missing or too short in environment.");
     process.exit(1);
 }
 
 if (!JAAS_APP_ID || !JAAS_KEY_ID || !JAAS_PRIVATE_KEY_PATH) {
-    console.error("ERROR: JaaS settings missing in .env");
+    console.error("ERROR: JaaS settings missing in environment.");
     process.exit(1);
 }
 
 if (!fs.existsSync(JAAS_PRIVATE_KEY_PATH)) {
-    console.error("ERROR: JaaS private key file not found.");
+    console.error("ERROR: JaaS private key file not found:", JAAS_PRIVATE_KEY_PATH);
     process.exit(1);
 }
 
@@ -47,7 +44,7 @@ let PRIVATE_KEY;
 try {
     PRIVATE_KEY = fs.readFileSync(JAAS_PRIVATE_KEY_PATH, "utf8");
 } catch (error) {
-    console.error("ERROR: Could not read JaaS private key.");
+    console.error("ERROR: Could not read JaaS private key:", error.message);
     process.exit(1);
 }
 
@@ -62,17 +59,24 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use(express.json({ limit: "20kb" }));
-
 app.use(express.urlencoded({
     extended: true,
     limit: "20kb"
 }));
 
 // =====================================
-// SESSION SETTINGS
+// POSTGRESQL SESSION STORE
 // =====================================
 
+const PgSessionStore = connectPgSimple(session);
+
 app.use(session({
+    store: new PgSessionStore({
+        pool,
+        tableName: "user_sessions",
+        createTableIfMissing: true,
+        pruneSessionInterval: 15 * 60
+    }),
     name: "ucs.sid",
     secret: SESSION_SECRET,
     resave: false,
@@ -91,7 +95,7 @@ app.use(session({
 
 function regenerateSession(req) {
     return new Promise((resolve, reject) => {
-        req.session.regenerate(error => {
+        req.session.regenerate((error) => {
             if (error) reject(error);
             else resolve();
         });
@@ -100,7 +104,7 @@ function regenerateSession(req) {
 
 function saveSession(req) {
     return new Promise((resolve, reject) => {
-        req.session.save(error => {
+        req.session.save((error) => {
             if (error) reject(error);
             else resolve();
         });
@@ -111,7 +115,7 @@ function destroySession(req) {
     return new Promise((resolve, reject) => {
         if (!req.session) return resolve();
 
-        req.session.destroy(error => {
+        req.session.destroy((error) => {
             if (error) reject(error);
             else resolve();
         });
@@ -122,20 +126,20 @@ function destroySession(req) {
 // STUDENT LOOKUP HELPER
 // =====================================
 
-function getLoggedInStudent(req) {
-
+async function getLoggedInStudent(req) {
     if (!req.session.studentRoll || !req.session.studentClass) {
         return null;
     }
 
-    const student = db.prepare(`
-        SELECT name, roll_number, class_name, active_session_id
-        FROM students
-        WHERE roll_number = ? AND class_name = ?
-    `).get(
-        req.session.studentRoll,
-        req.session.studentClass
+    const result = await pool.query(
+        `SELECT name, roll_number, class_name, active_session_id
+         FROM students
+         WHERE roll_number = $1 AND class_name = $2
+         LIMIT 1`,
+        [req.session.studentRoll, req.session.studentClass]
     );
+
+    const student = result.rows[0];
 
     if (!student || student.active_session_id !== req.sessionID) {
         return null;
@@ -149,19 +153,15 @@ function getLoggedInStudent(req) {
 // =====================================
 
 app.use((req, res, next) => {
-
     const requestedPath = req.path;
 
     const blockedFiles =
-        /(^|\/)(server\.js|database\.js|add-student\.js|add-teacher\.js|check-database\.js|package(-lock)?\.json|\.env(\..*)?|node_modules|\.git)(\/|$)/i;
+        /(^|\/)(server\.js|database\.js|postgres\.js|setup-postgres\.js|migrate-database\.js|add-student\.js|add-teacher\.js|check-database\.js|package(-lock)?\.json|\.env(\..*)?|node_modules|\.git)(\/|$)/i;
 
     const blockedExtensions =
         /\.(db|sqlite|sqlite3|pem|key)(?:$|[-.])/i;
 
-    if (
-        blockedFiles.test(requestedPath) ||
-        blockedExtensions.test(requestedPath)
-    ) {
+    if (blockedFiles.test(requestedPath) || blockedExtensions.test(requestedPath)) {
         return res.sendStatus(404);
     }
 
@@ -186,9 +186,7 @@ app.use(express.static(__dirname, {
 // =====================================
 
 app.post("/api/login", async (req, res) => {
-
     try {
-
         const name = typeof req.body.name === "string"
             ? req.body.name.trim()
             : "";
@@ -221,12 +219,15 @@ app.post("/api/login", async (req, res) => {
             });
         }
 
-        // Same roll number can exist in another class.
-        const student = db.prepare(`
-            SELECT *
-            FROM students
-            WHERE roll_number = ? AND class_name = ?
-        `).get(rollNumber, className);
+        const result = await pool.query(
+            `SELECT *
+             FROM students
+             WHERE roll_number = $1 AND class_name = $2
+             LIMIT 1`,
+            [rollNumber, className]
+        );
+
+        const student = result.rows[0];
 
         if (!student) {
             return res.status(401).json({
@@ -236,9 +237,9 @@ app.post("/api/login", async (req, res) => {
         }
 
         const nameMatch =
-            student.name.trim().toLowerCase() === name.toLowerCase();
+            String(student.name).trim().toLowerCase() === name.toLowerCase();
 
-        const dobMatch = student.dob === dob;
+        const dobMatch = String(student.dob) === dob;
 
         const passwordMatch = await bcrypt.compare(
             password,
@@ -255,52 +256,42 @@ app.post("/api/login", async (req, res) => {
         await regenerateSession(req);
 
         req.session.studentRoll = student.roll_number;
-        req.session.studentClass = student.class_name;
+        req.session.studentClass = String(student.class_name);
 
-        db.prepare(`
-            UPDATE students
-            SET active_session_id = ?
-            WHERE roll_number = ? AND class_name = ?
-        `).run(
-            req.sessionID,
-            student.roll_number,
-            student.class_name
+        await pool.query(
+            `UPDATE students
+             SET active_session_id = $1
+             WHERE roll_number = $2 AND class_name = $3`,
+            [req.sessionID, student.roll_number, student.class_name]
         );
 
         try {
             await saveSession(req);
         } catch (error) {
-
-            db.prepare(`
-                UPDATE students
-                SET active_session_id = NULL
-                WHERE roll_number = ?
-                AND class_name = ?
-                AND active_session_id = ?
-            `).run(
-                student.roll_number,
-                student.class_name,
-                req.sessionID
+            await pool.query(
+                `UPDATE students
+                 SET active_session_id = NULL
+                 WHERE roll_number = $1
+                   AND class_name = $2
+                   AND active_session_id = $3`,
+                [student.roll_number, student.class_name, req.sessionID]
             );
-
             throw error;
         }
 
-        res.json({
+        return res.json({
             success: true,
             message: "Login successful!",
             student: {
                 name: student.name,
                 roll_number: student.roll_number,
-                class_name: student.class_name
+                class_name: String(student.class_name)
             }
         });
 
     } catch (error) {
-
         console.error("Student Login Error:", error);
-
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Server error."
         });
@@ -311,38 +302,32 @@ app.post("/api/login", async (req, res) => {
 // STUDENT SESSION CHECK
 // =====================================
 
-app.get("/api/me", (req, res) => {
-
+app.get("/api/me", async (req, res) => {
     try {
-
-        const student = getLoggedInStudent(req);
+        const student = await getLoggedInStudent(req);
 
         if (!student) {
+            await destroySession(req);
+            res.clearCookie("ucs.sid", { path: "/" });
 
-            return req.session.destroy(() => {
-                res.clearCookie("ucs.sid", { path: "/" });
-
-                res.status(401).json({
-                    success: false,
-                    message: "Student session invalid hai."
-                });
+            return res.status(401).json({
+                success: false,
+                message: "Student session invalid hai."
             });
         }
 
-        res.json({
+        return res.json({
             success: true,
             student: {
                 name: student.name,
                 roll_number: student.roll_number,
-                class_name: student.class_name
+                class_name: String(student.class_name)
             }
         });
 
     } catch (error) {
-
         console.error("Student Session Error:", error);
-
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Server error."
         });
@@ -354,26 +339,22 @@ app.get("/api/me", (req, res) => {
 // =====================================
 
 function createJitsiToken(userId, userName, roomName, moderator) {
-
     const now = Math.floor(Date.now() / 1000);
 
     return jwt.sign({
-
         aud: "jitsi",
         iss: "chat",
         sub: JAAS_APP_ID,
         room: roomName,
         nbf: now - 10,
         exp: now + 3600,
-
         context: {
             user: {
                 id: String(userId),
                 name: userName,
-                moderator: moderator
+                moderator
             }
         }
-
     }, PRIVATE_KEY, {
         algorithm: "RS256",
         header: {
@@ -387,11 +368,9 @@ function createJitsiToken(userId, userName, roomName, moderator) {
 // STUDENT JITSI TOKEN
 // =====================================
 
-app.post("/api/jitsi-token", (req, res) => {
-
+app.post("/api/jitsi-token", async (req, res) => {
     try {
-
-        const student = getLoggedInStudent(req);
+        const student = await getLoggedInStudent(req);
 
         if (!student) {
             return res.status(401).json({
@@ -400,8 +379,7 @@ app.post("/api/jitsi-token", (req, res) => {
             });
         }
 
-        const roomName =
-            `ucs-academy-class-${student.class_name}`;
+        const roomName = `ucs-academy-class-${student.class_name}`;
 
         const token = createJitsiToken(
             student.roll_number,
@@ -410,17 +388,15 @@ app.post("/api/jitsi-token", (req, res) => {
             false
         );
 
-        res.json({
+        return res.json({
             success: true,
             token,
             roomName
         });
 
     } catch (error) {
-
         console.error("Student Jitsi Token Error:", error);
-
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Jitsi token could not be created."
         });
@@ -432,38 +408,33 @@ app.post("/api/jitsi-token", (req, res) => {
 // =====================================
 
 app.post("/api/logout", async (req, res) => {
-
     try {
-
         if (req.session.studentRoll && req.session.studentClass) {
-
-            db.prepare(`
-                UPDATE students
-                SET active_session_id = NULL
-                WHERE roll_number = ?
-                AND class_name = ?
-                AND active_session_id = ?
-            `).run(
-                req.session.studentRoll,
-                req.session.studentClass,
-                req.sessionID
+            await pool.query(
+                `UPDATE students
+                 SET active_session_id = NULL
+                 WHERE roll_number = $1
+                   AND class_name = $2
+                   AND active_session_id = $3`,
+                [
+                    req.session.studentRoll,
+                    req.session.studentClass,
+                    req.sessionID
+                ]
             );
         }
 
         await destroySession(req);
-
         res.clearCookie("ucs.sid", { path: "/" });
 
-        res.json({
+        return res.json({
             success: true,
             message: "Logout successful."
         });
 
     } catch (error) {
-
         console.error("Student Logout Error:", error);
-
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Logout failed."
         });
@@ -475,9 +446,7 @@ app.post("/api/logout", async (req, res) => {
 // =====================================
 
 app.post("/api/teacher-login", async (req, res) => {
-
     try {
-
         const username = typeof req.body.username === "string"
             ? req.body.username.trim()
             : "";
@@ -493,11 +462,15 @@ app.post("/api/teacher-login", async (req, res) => {
             });
         }
 
-        const teacher = db.prepare(`
-            SELECT *
-            FROM teachers
-            WHERE username = ?
-        `).get(username);
+        const result = await pool.query(
+            `SELECT *
+             FROM teachers
+             WHERE username = $1
+             LIMIT 1`,
+            [username]
+        );
+
+        const teacher = result.rows[0];
 
         if (!teacher) {
             return res.status(401).json({
@@ -528,29 +501,28 @@ app.post("/api/teacher-login", async (req, res) => {
         }
 
         await regenerateSession(req);
-
         req.session.teacherUsername = teacher.username;
 
-        db.prepare(`
-            UPDATE teachers
-            SET active_session_id = ?
-            WHERE username = ?
-        `).run(req.sessionID, teacher.username);
+        await pool.query(
+            `UPDATE teachers
+             SET active_session_id = $1
+             WHERE username = $2`,
+            [req.sessionID, teacher.username]
+        );
 
         try {
             await saveSession(req);
         } catch (error) {
-
-            db.prepare(`
-                UPDATE teachers
-                SET active_session_id = NULL
-                WHERE username = ? AND active_session_id = ?
-            `).run(teacher.username, req.sessionID);
-
+            await pool.query(
+                `UPDATE teachers
+                 SET active_session_id = NULL
+                 WHERE username = $1 AND active_session_id = $2`,
+                [teacher.username, req.sessionID]
+            );
             throw error;
         }
 
-        res.json({
+        return res.json({
             success: true,
             message: "Teacher login successful!",
             teacher: {
@@ -561,10 +533,8 @@ app.post("/api/teacher-login", async (req, res) => {
         });
 
     } catch (error) {
-
         console.error("Teacher Login Error:", error);
-
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Server error."
         });
@@ -575,10 +545,8 @@ app.post("/api/teacher-login", async (req, res) => {
 // TEACHER SESSION CHECK
 // =====================================
 
-app.get("/api/teacher-me", (req, res) => {
-
+app.get("/api/teacher-me", async (req, res) => {
     try {
-
         if (!req.session.teacherUsername) {
             return res.status(401).json({
                 success: false,
@@ -586,38 +554,38 @@ app.get("/api/teacher-me", (req, res) => {
             });
         }
 
-        const teacher = db.prepare(`
-            SELECT name, username, class_name, active_session_id
-            FROM teachers
-            WHERE username = ?
-        `).get(req.session.teacherUsername);
+        const result = await pool.query(
+            `SELECT name, username, class_name, active_session_id
+             FROM teachers
+             WHERE username = $1
+             LIMIT 1`,
+            [req.session.teacherUsername]
+        );
+
+        const teacher = result.rows[0];
 
         if (!teacher || teacher.active_session_id !== req.sessionID) {
+            await destroySession(req);
+            res.clearCookie("ucs.sid", { path: "/" });
 
-            return req.session.destroy(() => {
-                res.clearCookie("ucs.sid", { path: "/" });
-
-                res.status(401).json({
-                    success: false,
-                    message: "Invalid teacher session."
-                });
+            return res.status(401).json({
+                success: false,
+                message: "Invalid teacher session."
             });
         }
 
-        res.json({
+        return res.json({
             success: true,
             teacher: {
                 name: teacher.name,
                 username: teacher.username,
-                class_name: teacher.class_name
+                class_name: String(teacher.class_name)
             }
         });
 
     } catch (error) {
-
         console.error("Teacher Session Error:", error);
-
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Server error."
         });
@@ -628,10 +596,8 @@ app.get("/api/teacher-me", (req, res) => {
 // TEACHER JITSI TOKEN
 // =====================================
 
-app.post("/api/teacher-jitsi-token", (req, res) => {
-
+app.post("/api/teacher-jitsi-token", async (req, res) => {
     try {
-
         if (!req.session.teacherUsername) {
             return res.status(401).json({
                 success: false,
@@ -639,16 +605,17 @@ app.post("/api/teacher-jitsi-token", (req, res) => {
             });
         }
 
-        const teacher = db.prepare(`
-            SELECT name, username, class_name, active_session_id
-            FROM teachers
-            WHERE username = ?
-        `).get(req.session.teacherUsername);
+        const result = await pool.query(
+            `SELECT name, username, class_name, active_session_id
+             FROM teachers
+             WHERE username = $1
+             LIMIT 1`,
+            [req.session.teacherUsername]
+        );
 
-        if (
-            !teacher ||
-            teacher.active_session_id !== req.sessionID
-        ) {
+        const teacher = result.rows[0];
+
+        if (!teacher || teacher.active_session_id !== req.sessionID) {
             return res.status(401).json({
                 success: false,
                 message: "Invalid teacher session."
@@ -664,8 +631,7 @@ app.post("/api/teacher-jitsi-token", (req, res) => {
             });
         }
 
-        const roomName =
-            `ucs-academy-class-${teacherClass}`;
+        const roomName = `ucs-academy-class-${teacherClass}`;
 
         const token = createJitsiToken(
             teacher.username,
@@ -674,17 +640,15 @@ app.post("/api/teacher-jitsi-token", (req, res) => {
             true
         );
 
-        res.json({
+        return res.json({
             success: true,
             token,
             roomName
         });
 
     } catch (error) {
-
         console.error("Teacher Jitsi Token Error:", error);
-
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Teacher live class token could not be created."
         });
@@ -696,32 +660,27 @@ app.post("/api/teacher-jitsi-token", (req, res) => {
 // =====================================
 
 app.post("/api/teacher-logout", async (req, res) => {
-
     try {
-
         if (req.session.teacherUsername) {
-
-            db.prepare(`
-                UPDATE teachers
-                SET active_session_id = NULL
-                WHERE username = ? AND active_session_id = ?
-            `).run(req.session.teacherUsername, req.sessionID);
+            await pool.query(
+                `UPDATE teachers
+                 SET active_session_id = NULL
+                 WHERE username = $1 AND active_session_id = $2`,
+                [req.session.teacherUsername, req.sessionID]
+            );
         }
 
         await destroySession(req);
-
         res.clearCookie("ucs.sid", { path: "/" });
 
-        res.json({
+        return res.json({
             success: true,
             message: "Teacher logout successful."
         });
 
     } catch (error) {
-
         console.error("Teacher Logout Error:", error);
-
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Teacher logout failed."
         });
@@ -740,13 +699,34 @@ app.use((req, res) => {
 // START SERVER
 // =====================================
 
-app.listen(PORT, () => {
-
+const server = app.listen(PORT, () => {
     console.log("------------------------------------");
     console.log("       UCS ACADEMY SERVER");
     console.log("------------------------------------");
     console.log(`Server running at http://localhost:${PORT}`);
+    console.log("PostgreSQL Database Connected");
+    console.log("PostgreSQL Session Store Ready");
     console.log("Student and Teacher Login Ready");
     console.log("Jitsi Live Classes Ready");
     console.log("------------------------------------");
 });
+
+server.on("error", (error) => {
+    console.error("Server startup error:", error);
+});
+
+async function shutdown() {
+    console.log("Shutting down UCS ACADEMY server...");
+    server.close(async () => {
+        try {
+            await pool.end();
+            process.exit(0);
+        } catch (error) {
+            console.error("Error closing PostgreSQL pool:", error);
+            process.exit(1);
+        }
+    });
+}
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
