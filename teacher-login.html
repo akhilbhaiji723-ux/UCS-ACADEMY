@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Login | UCS ACADEMY</title>
+
+    <link rel="stylesheet" href="teacher-login.css">
+</head>
+<body>
+    <a href="index.html" class="back-home">
+    ← Back to Home
+</a>
+
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <main class="login-container">
+
+        <div class="brand">
+            <div class="brand-icon">🎓</div>
+            <h1>UCS <span>ACADEMY</span></h1>
+            <p>TEACHER PORTAL</p>
+        </div>
+
+        <div class="login-card">
+
+            <div class="welcome-icon">👨‍🏫</div>
+
+            <h2>Welcome Back!</h2>
+            <p class="subtitle">Login to your teacher account</p>
+
+            <form id="teacherLoginForm">
+
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Password</label>
+
+                    <div class="password-box">
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button type="button" id="togglePassword">
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <p id="message"></p>
+
+                <button type="submit" id="loginBtn">
+                    Login to Teacher Portal
+                    <span>→</span>
+                </button>
+
+            </form>
+
+            <div class="security-note">
+                🔒 Secure Teacher Access
+            </div>
+
+        </div>
+
+        <footer>
+            © 2026 UCS ACADEMY. All Rights Reserved.
+        </footer>
+
+    </main>
+
+    <script src="teacher-login.js"></script>
+
+</body>
+</html>

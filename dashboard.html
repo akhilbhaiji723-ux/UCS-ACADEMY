@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard | UCS ACADEMY</title>
+
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body>
+
+    <!-- Top Navigation -->
+    <header class="topbar">
+        <h2>🎓 UCS ACADEMY</h2>
+        <button type="button" id="logoutBtn">Logout ↗</button>
+    </header>
+
+    <main class="container">
+
+        <!-- Welcome Section -->
+        <section class="welcome">
+
+            <div>
+                <p>STUDENT DASHBOARD</p>
+
+                <h1>
+                    Welcome,
+                    <span id="studentName">Student</span>!
+                </h1>
+
+                <p>Your classroom is waiting for you.</p>
+            </div>
+
+            <div class="welcome-icon">📚</div>
+
+        </section>
+
+        <!-- Student Profile -->
+        <section class="profile">
+
+            <h2>Student Profile</h2>
+
+            <div class="details">
+
+                <div>
+                    <small>Student Name</small>
+                    <h3 id="name">Loading...</h3>
+                </div>
+
+                <div>
+                    <small>Roll Number</small>
+                    <h3 id="roll">Loading...</h3>
+                </div>
+
+                <div>
+                    <small>Class</small>
+                    <h3 id="class">Loading...</h3>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Live Classroom -->
+        <section class="live-room">
+
+            <div class="room-icon">🎥</div>
+
+            <p class="room-label">ONLINE CLASSROOM</p>
+
+            <h2>Live Classroom</h2>
+
+            <p class="room-description">
+                Your classroom is ready.
+                Join your live lecture now.
+            </p>
+
+            <button type="button" id="joinLiveBtn">
+                JOIN LIVE CLASS →
+            </button>
+
+            <p class="room-footer">
+                🔒 Authorized Students Only
+            </p>
+
+        </section>
+
+    </main>
+
+    <script src="dashboard.js"></script>
+
+</body>
+</html>

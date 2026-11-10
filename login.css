@@ -1,0 +1,234 @@
+
+/* =====================================
+   UCS ACADEMY - STUDENT LOGIN
+===================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: #081426;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* HOME BUTTON */
+
+.home-btn {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    background: #1685e5;
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+.home-btn:hover {
+    background: #006bc7;
+    transform: translateY(-2px);
+}
+
+/* LOGIN CONTAINER */
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 90px 20px 30px;
+    background:
+        radial-gradient(circle at top, #153b61, transparent 50%),
+        #081426;
+}
+
+/* LOGIN BOX */
+
+.login-box {
+    width: 100%;
+    max-width: 430px;
+    background: linear-gradient(145deg, #142b47, #0d1d32);
+    border: 1px solid #294763;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 20px 60px #0006;
+    animation: loginAppear 0.6s ease;
+}
+
+.login-logo {
+    text-align: center;
+    font-size: 48px;
+    margin-bottom: 12px;
+    animation: floating 3s ease-in-out infinite;
+}
+
+.login-box h1 {
+    text-align: center;
+    font-size: 27px;
+}
+
+.login-subtitle {
+    text-align: center;
+    color: #48b5ff;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin: 12px 0 20px;
+}
+
+/* CLASS LABEL */
+
+.class-label {
+    background: #173b60;
+    color: #52baff;
+    text-align: center;
+    padding: 11px;
+    border: 1px solid #285780;
+    border-radius: 8px;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+/* FORM LABELS */
+
+.login-box label {
+    display: block;
+    color: #d5e3f2;
+    font-size: 13px;
+    margin: 15px 0 8px;
+}
+
+/* INPUT FIELDS */
+
+.login-box input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #35516c;
+    background: #081426;
+    color: #ffffff;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+.login-box input::placeholder {
+    color: #7890a9;
+}
+
+.login-box input:focus {
+    border-color: #39a9ff;
+    box-shadow: 0 0 0 3px #1685e533;
+}
+
+/* LOGIN BUTTON */
+
+.login-box button {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #1685e5, #4b55dc);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    margin-top: 25px;
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.login-box button:hover {
+    background: linear-gradient(135deg, #006bc7, #393bc5);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px #1685e555;
+}
+
+.login-box button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+/* MESSAGE */
+
+#message {
+    text-align: center;
+    font-size: 13px;
+    margin-top: 15px;
+    min-height: 18px;
+    line-height: 1.5;
+}
+
+/* FOOTER */
+
+.login-footer {
+    text-align: center;
+    color: #8fa8c2;
+    font-size: 11px;
+    margin-top: 25px;
+}
+
+/* ANIMATIONS */
+
+@keyframes loginAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 500px) {
+
+    .login-container {
+        padding: 90px 15px 25px;
+    }
+
+    .login-box {
+        padding: 25px 20px;
+    }
+
+    .home-btn {
+        top: 18px;
+        left: 15px;
+    }
+
+    .login-box h1 {
+        font-size: 24px;
+    }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

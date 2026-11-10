@@ -1,0 +1,250 @@
+
+/* =====================================
+   UCS ACADEMY - STUDENT CLASS SELECTION
+===================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: #081426;
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* HOME BUTTON */
+
+.home-btn {
+    position: absolute;
+    top: 20px;
+    left: 25px;
+    padding: 11px 20px;
+    background: #1685e5;
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: 0.3s ease;
+}
+
+.home-btn:hover {
+    background: #006bc7;
+    transform: translateY(-2px);
+}
+
+/* CLASS SECTION */
+
+.classes {
+    padding: 65px 8% 0;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 9px 15px;
+    background: #102c49;
+    color: #56baff;
+    border: 1px solid #245078;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.section-heading h2 {
+    font-size: 35px;
+    margin: 17px 0 12px;
+}
+
+.section-heading p {
+    color: #9db0c6;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* CLASS CARDS */
+
+.class-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.class-card {
+    min-width: 0;
+    padding: 28px 18px;
+    border-radius: 14px;
+    border: 1px solid #233c58;
+    background: linear-gradient(145deg, #132b47, #0e1e32);
+    transition: 0.3s ease;
+    box-shadow: 0 10px 25px #0003;
+}
+
+.class-card:hover {
+    transform: translateY(-7px);
+    border-color: #268ee1;
+    box-shadow: 0 15px 30px #1685e533;
+}
+
+.class-card span {
+    display: inline-block;
+    font-size: 35px;
+    transition: 0.3s ease;
+}
+
+.class-card:hover span {
+    transform: scale(1.15);
+}
+
+.class-card h3 {
+    font-size: 19px;
+    margin: 20px 0 10px;
+}
+
+.class-card p {
+    color: #9db0c6;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 23px;
+}
+
+.class-card a {
+    display: inline-block;
+    color: #42b0ff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.class-card a:hover {
+    color: #ffffff;
+    transform: translateX(4px);
+}
+
+/* LOGIN BANNER */
+
+.cta-section {
+    margin: 100px 8% 70px;
+    padding: 55px 20px;
+    text-align: center;
+    border-radius: 20px;
+    background: linear-gradient(120deg, #124d82, #1167ae);
+    box-shadow: 0 15px 40px #0004;
+}
+
+.cta-section h2 {
+    font-size: 28px;
+    line-height: 1.4;
+}
+
+.cta-section p {
+    margin: 15px 0 28px;
+    color: #d5e9ff;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.login-btn {
+    display: inline-block;
+    padding: 14px 23px;
+    background: #ffffff;
+    color: #1262a0;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.3s ease;
+}
+
+.login-btn:hover {
+    background: #d9efff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px #0003;
+}
+
+/* FOOTER */
+
+footer {
+    background: #050e1b;
+    border-top: 1px solid #1b304b;
+    padding: 35px 20px;
+    text-align: center;
+}
+
+footer h3 {
+    font-size: 18px;
+    color: #56baff;
+}
+
+footer p {
+    color: #90a4ba;
+    font-size: 12px;
+    margin-top: 14px;
+    line-height: 1.6;
+}
+
+.copyright {
+    margin-top: 25px;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+
+    .class-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 550px) {
+
+    .classes {
+        padding: 85px 5% 0;
+    }
+
+    .class-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-heading h2 {
+        font-size: 27px;
+    }
+
+    .cta-section {
+        margin: 60px 5%;
+        padding: 40px 18px;
+    }
+
+    .cta-section h2 {
+        font-size: 22px;
+    }
+
+    .home-btn {
+        top: 18px;
+        left: 5%;
+    }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}

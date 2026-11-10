@@ -1,0 +1,39 @@
+
+# Dependencies
+node_modules/
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Private keys
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Logs
+*.log
+npm-debug.log*
+
+# System files
+.DS_Store
+
+# Editor files
+.vscode/
+
+# Private registration and database scripts
+add-student.js
+add-teacher.js
+check-database.js
+
+# Database backups
+*.db-shm
+*.db-wal
+*.backup

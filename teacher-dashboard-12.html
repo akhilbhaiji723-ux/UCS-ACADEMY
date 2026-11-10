@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 12 Teacher Dashboard | UCS ACADEMY</title>
+    <link rel="stylesheet" href="teacher-dashboard.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <div class="logo">🎓 UCS ACADEMY</div>
+        <button id="logoutBtn">Logout ↗</button>
+    </header>
+
+    <main class="container">
+
+        <section class="welcome">
+            <p class="small-title">TEACHER PORTAL</p>
+            <h1>Welcome, <span id="teacherName">Teacher</span>!</h1>
+            <p>Manage your Class 12 online classroom from here.</p>
+        </section>
+
+        <section class="profile-card">
+            <div class="profile-icon">👨‍🏫</div>
+            <div>
+                <h2 id="profileName">Teacher</h2>
+                <p>Username: <span id="teacherUsername">Loading...</span></p>
+                <p>Assigned Class: <span id="teacherClass">Loading...</span></p>
+            </div>
+        </section>
+
+        <section class="live-card">
+            <div class="live-icon">🎥</div>
+
+            <p class="live-label">ONLINE CLASSROOM</p>
+            <h2>Class 12 Live Class</h2>
+
+            <p class="description">
+                Start your Class 12 online classroom and connect with your students.
+            </p>
+
+            <button id="startClassBtn">
+                START LIVE CLASS <span>→</span>
+            </button>
+        </section>
+
+        <footer>
+            © 2026 UCS ACADEMY
+        </footer>
+
+    </main>
+
+    <script src="teacher-dashboard.js"></script>
+</body>
+</html>

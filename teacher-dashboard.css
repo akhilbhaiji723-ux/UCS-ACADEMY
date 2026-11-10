@@ -1,0 +1,328 @@
+
+/* =====================================
+   UCS ACADEMY - TEACHER DASHBOARD
+===================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #080d1c;
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* TOP NAVIGATION */
+
+.topbar {
+    min-height: 75px;
+    padding: 15px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: #111a32;
+    border-bottom: 1px solid #273252;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #a58aff;
+}
+
+#logoutBtn {
+    padding: 11px 22px;
+    background: #252e49;
+    color: #ffffff;
+    border: 1px solid #455174;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+#logoutBtn:hover {
+    background: #e14e65;
+    transform: translateY(-2px);
+}
+
+#logoutBtn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+/* MAIN CONTAINER */
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 55px 20px;
+}
+
+/* WELCOME SECTION */
+
+.welcome {
+    margin-bottom: 35px;
+    animation: fadeIn 0.6s ease;
+}
+
+.small-title {
+    color: #a58aff;
+    font-size: 12px;
+    letter-spacing: 4px;
+    margin-bottom: 13px;
+    font-weight: bold;
+}
+
+.welcome h1 {
+    font-size: clamp(26px, 4vw, 36px);
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.welcome h1 span {
+    color: #a58aff;
+}
+
+.welcome p:last-child {
+    color: #9ba6c3;
+    line-height: 1.6;
+}
+
+/* TEACHER PROFILE */
+
+.profile-card {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 25px;
+    border-radius: 17px;
+    background: linear-gradient(135deg, #141e39, #1b2142);
+    border: 1px solid #303c60;
+    margin-bottom: 35px;
+    box-shadow: 0 12px 35px #0004;
+    transition: 0.3s ease;
+}
+
+.profile-card:hover {
+    border-color: #8067e9;
+    transform: translateY(-3px);
+}
+
+.profile-icon {
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #7047ed, #2878f5);
+    border-radius: 18px;
+    font-size: 35px;
+    box-shadow: 0 8px 25px #7047ed44;
+}
+
+.profile-card h2 {
+    margin-bottom: 9px;
+    font-size: 21px;
+    overflow-wrap: anywhere;
+}
+
+.profile-card p {
+    color: #a5b0cb;
+    font-size: 14px;
+    margin-top: 7px;
+    line-height: 1.5;
+}
+
+.profile-card span {
+    color: #ffffff;
+    overflow-wrap: anywhere;
+}
+
+/* LIVE CLASS CARD */
+
+.live-card {
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+    padding: 40px 25px;
+    text-align: center;
+    background: linear-gradient(145deg, #19264a, #15172f);
+    border: 1px solid #51428d;
+    border-radius: 22px;
+    box-shadow: 0 20px 60px #0004;
+    transition: 0.3s ease;
+}
+
+.live-card:hover {
+    border-color: #8067e9;
+    box-shadow: 0 20px 60px #5135a522;
+}
+
+.live-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    animation: floating 3s ease-in-out infinite;
+}
+
+.live-label {
+    color: #a58aff;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    margin-bottom: 12px;
+}
+
+.live-card h2 {
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+.description {
+    color: #a8b1ca;
+    line-height: 1.7;
+    margin-bottom: 28px;
+}
+
+/* START LIVE CLASS BUTTON */
+
+#startClassBtn {
+    width: 100%;
+    max-width: 320px;
+    padding: 17px;
+    border: none;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(100deg, #7047ed, #2878f5);
+    box-shadow: 0 8px 25px #5135a544;
+    transition: 0.3s ease;
+}
+
+#startClassBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px #5135a577;
+}
+
+#startClassBtn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+#startClassBtn span {
+    margin-left: 8px;
+}
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+    color: #65708e;
+    font-size: 12px;
+    margin-top: 60px;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+/* ANIMATIONS */
+
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* TABLET AND MOBILE */
+
+@media (max-width: 600px) {
+
+    .topbar {
+        padding: 15px;
+    }
+
+    .logo {
+        font-size: 13px;
+    }
+
+    #logoutBtn {
+        padding: 10px 14px;
+        font-size: 12px;
+    }
+
+    .container {
+        padding: 35px 16px;
+    }
+
+    .welcome h1 {
+        font-size: 26px;
+    }
+
+    .profile-card {
+        padding: 18px;
+        gap: 15px;
+    }
+
+    .profile-icon {
+        width: 55px;
+        height: 55px;
+        min-width: 55px;
+        font-size: 27px;
+    }
+
+    .profile-card h2 {
+        font-size: 18px;
+    }
+
+    .live-card {
+        padding: 35px 18px;
+    }
+
+    .live-card h2 {
+        font-size: 25px;
+    }
+
+    #startClassBtn {
+        width: 100%;
+    }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}

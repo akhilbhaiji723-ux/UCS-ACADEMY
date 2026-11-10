@@ -1,0 +1,252 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #080d1c;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+    padding: 30px 15px;
+    position: relative;
+}
+
+.background-glow {
+    position: fixed;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.35;
+    z-index: -1;
+}
+
+.glow-one {
+    background: #6738ff;
+    top: -100px;
+    left: -100px;
+}
+
+.glow-two {
+    background: #087bff;
+    bottom: -100px;
+    right: -100px;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 440px;
+    text-align: center;
+}
+
+.brand {
+    margin-bottom: 30px;
+}
+
+.brand-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.brand h1 {
+    font-size: 23px;
+    letter-spacing: 2px;
+    font-weight: 800;
+}
+
+.brand h1 span {
+    color: #9d83ff;
+}
+
+.brand p {
+    margin-top: 9px;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: #a6a8c0;
+}
+
+.login-card {
+    background: rgba(22, 29, 55, 0.85);
+    border: 1px solid rgba(160, 145, 255, 0.2);
+    border-radius: 24px;
+    padding: 38px 32px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+}
+
+.welcome-icon {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 20px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #6945ed, #2479ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 35px;
+    box-shadow: 0 10px 30px rgba(91, 72, 255, 0.3);
+}
+
+.login-card h2 {
+    font-size: 27px;
+    margin-bottom: 9px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #a5abc4;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 21px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    color: #d6d8e8;
+    margin-bottom: 10px;
+}
+
+.input-group input {
+    width: 100%;
+    height: 52px;
+    background: #10172e;
+    border: 1px solid #303b60;
+    border-radius: 12px;
+    outline: none;
+    padding: 0 15px;
+    color: white;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.input-group input:focus {
+    border-color: #9675ff;
+    box-shadow: 0 0 0 3px rgba(150, 117, 255, 0.12);
+}
+
+.input-group input::placeholder {
+    color: #707995;
+}
+
+.password-box {
+    position: relative;
+}
+
+.password-box input {
+    padding-right: 65px;
+}
+
+#togglePassword {
+    position: absolute;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #a68cff;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#message {
+    font-size: 13px;
+    min-height: 18px;
+    margin-bottom: 12px;
+    color: #ff7777;
+}
+
+#loginBtn {
+    width: 100%;
+    height: 54px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(100deg, #7047ed, #2878f5);
+    box-shadow: 0 8px 25px rgba(93, 75, 245, 0.25);
+    transition: 0.3s;
+}
+
+#loginBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(93, 75, 245, 0.4);
+}
+
+#loginBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#loginBtn span {
+    margin-left: 8px;
+    font-size: 19px;
+}
+
+.security-note {
+    margin-top: 25px;
+    color: #8d96b5;
+    font-size: 12px;
+}
+
+footer {
+    color: #737c99;
+    font-size: 11px;
+    margin-top: 25px;
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 32px 22px;
+    }
+
+    .brand h1 {
+        font-size: 19px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.back-home {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    padding: 11px 20px;
+    background: #17243d;
+    color: white;
+    text-decoration: none;
+    border: 1px solid #334767;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.back-home:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}

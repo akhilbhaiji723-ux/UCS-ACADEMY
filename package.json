@@ -1,0 +1,28 @@
+
+{
+  "name": "ucs-academy",
+  "version": "1.0.0",
+  "description": "UCS ACADEMY - Online Learning and Live Classes",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "ucs-academy",
+    "education",
+    "online-learning",
+    "live-classes"
+  ],
+  "author": "UCS ACADEMY",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "dotenv": "^18.0.9",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "jsonwebtoken": "^9.0.3"
+  }
+}

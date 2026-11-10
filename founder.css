@@ -1,0 +1,403 @@
+
+/* =====================================
+   UCS ACADEMY - FOUNDER PROFILE
+===================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #080f1e;
+    color: #ffffff;
+    line-height: 1.6;
+}
+
+/* HEADER */
+
+.header {
+    width: 100%;
+    min-height: 75px;
+    padding: 12px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0d192d;
+    border-bottom: 1px solid #203653;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.logo h2 {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.logo h2 span {
+    color: #38bdf8;
+}
+
+.home-btn {
+    padding: 10px 20px;
+    border: 1px solid #38bdf8;
+    border-radius: 8px;
+    color: #38bdf8;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.home-btn:hover {
+    background: #38bdf8;
+    color: #07111f;
+}
+
+/* HERO SECTION */
+
+.hero {
+    padding: 75px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #102e50, #1267a5);
+}
+
+.hero span {
+    color: #bfdbfe;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 3px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    margin: 12px 0;
+}
+
+.hero h1 strong {
+    color: #facc15;
+}
+
+.hero p {
+    max-width: 650px;
+    margin: auto;
+    color: #e0edff;
+    font-size: 16px;
+}
+
+/* FOUNDER SECTION */
+
+.founder-section {
+    padding: 85px 7%;
+}
+
+.founder-container {
+    max-width: 1150px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 0.85fr 1.4fr;
+    gap: 55px;
+    align-items: center;
+}
+
+/* FOUNDER IMAGE */
+
+.founder-image {
+    position: relative;
+    height: 490px;
+    overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid #294768;
+    background: #12233b;
+}
+
+.founder-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.image-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 35px 20px 20px;
+    background: linear-gradient(
+        transparent,
+        rgba(2, 8, 23, 0.95)
+    );
+}
+
+.image-label h2 {
+    font-size: 25px;
+}
+
+.image-label p {
+    color: #38bdf8;
+    font-weight: 600;
+}
+
+/* FOUNDER CONTENT */
+
+.founder-tag {
+    color: #38bdf8;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.founder-content h2 {
+    font-size: 40px;
+    margin: 12px 0 5px;
+}
+
+.founder-content h4 {
+    color: #facc15;
+    font-size: 15px;
+    margin-bottom: 22px;
+}
+
+.founder-intro {
+    color: #b9c7d9;
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+/* EDUCATION */
+
+.education-title {
+    margin: 30px 0 15px;
+    font-size: 20px;
+}
+
+.founder-education {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 13px;
+}
+
+.education-item {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 15px;
+    background: #101d32;
+    border: 1px solid #263e5b;
+    border-radius: 12px;
+    transition: 0.3s;
+}
+
+.education-item:hover {
+    transform: translateY(-4px);
+    border-color: #38bdf8;
+}
+
+.education-item span {
+    color: #38bdf8;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.education-item h5 {
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.education-item p {
+    color: #9aabc2;
+    font-size: 12px;
+}
+
+/* MISSION */
+
+.mission-box {
+    margin-top: 28px;
+    padding: 22px;
+    background: #102744;
+    border-left: 4px solid #38bdf8;
+    border-radius: 10px;
+}
+
+.mission-box h3 {
+    color: #38bdf8;
+    margin-bottom: 10px;
+    font-size: 21px;
+}
+
+.mission-box p {
+    color: #c1cde0;
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+/* VISION */
+
+.vision-section {
+    max-width: 1150px;
+    margin: 0 auto 65px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    background: #101d32;
+    border: 1px solid #263f60;
+    border-radius: 16px;
+}
+
+.vision-icon {
+    font-size: 45px;
+}
+
+.vision-section h2 {
+    color: #38bdf8;
+    margin-bottom: 8px;
+}
+
+.vision-section p {
+    color: #c1cde0;
+    font-size: 14px;
+}
+
+/* MESSAGE SECTION */
+
+.message-section {
+    max-width: 900px;
+    margin: 0 auto 80px;
+    padding: 45px 25px;
+    text-align: center;
+    background: linear-gradient(135deg, #123d70, #1267a5);
+    border-radius: 20px;
+}
+
+.message-section span {
+    color: #bfdbfe;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.message-section h2 {
+    font-size: 28px;
+    margin: 20px 0;
+}
+
+.message-section p {
+    color: #e0edff;
+    line-height: 1.9;
+}
+
+.message-section h4 {
+    color: #facc15;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+/* FOOTER */
+
+.footer {
+    padding: 25px 15px;
+    text-align: center;
+    background: #050b16;
+    border-top: 1px solid #203653;
+}
+
+.footer h3 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.footer h3 span {
+    color: #38bdf8;
+}
+
+.footer p {
+    color: #8fa2bb;
+    font-size: 13px;
+}
+
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 768px) {
+
+    .header {
+        padding: 12px 5%;
+    }
+
+    .logo h2 {
+        font-size: 18px;
+    }
+
+    .home-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .hero {
+        padding: 55px 18px;
+    }
+
+    .hero h1 {
+        font-size: 29px;
+    }
+
+    .hero p {
+        font-size: 14px;
+    }
+
+    .founder-section {
+        padding: 55px 5%;
+    }
+
+    .founder-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .founder-image {
+        height: 400px;
+        max-width: 360px;
+        width: 100%;
+        margin: auto;
+    }
+
+    .founder-content h2 {
+        font-size: 32px;
+    }
+
+    .founder-education {
+        grid-template-columns: 1fr;
+    }
+
+    .vision-section {
+        margin: 0 5% 45px;
+        padding: 20px;
+        align-items: flex-start;
+    }
+
+    .message-section {
+        margin: 0 5% 50px;
+        padding: 35px 20px;
+    }
+
+    .message-section h2 {
+        font-size: 22px;
+    }
+
+}

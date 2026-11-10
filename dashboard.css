@@ -1,0 +1,336 @@
+
+/* =====================================
+   UCS ACADEMY - STUDENT DASHBOARD
+===================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #080f1e;
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* TOP NAVIGATION */
+
+.topbar {
+    width: 100%;
+    min-height: 75px;
+    padding: 15px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background: #101c32;
+    border-bottom: 1px solid #263b59;
+}
+
+.topbar h2 {
+    font-size: 21px;
+    color: #55b8ff;
+    letter-spacing: 1px;
+}
+
+.topbar button {
+    padding: 12px 23px;
+    background: #e84961;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.topbar button:hover {
+    background: #ff294b;
+    transform: translateY(-2px);
+}
+
+.topbar button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* MAIN CONTAINER */
+
+.container {
+    width: min(1100px, 90%);
+    margin: 35px auto;
+}
+
+/* WELCOME SECTION */
+
+.welcome {
+    min-height: 220px;
+    padding: 40px;
+    border-radius: 20px;
+    background: linear-gradient(
+        120deg,
+        #123e73,
+        #182b54,
+        #35205e
+    );
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    box-shadow: 0 15px 40px #0005;
+    border: 1px solid #31527c;
+    animation: fadeIn 0.7s ease;
+}
+
+.welcome p {
+    color: #c5dafa;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.welcome h1 {
+    font-size: clamp(25px, 4vw, 36px);
+    margin-bottom: 12px;
+    overflow-wrap: anywhere;
+}
+
+.welcome-icon {
+    font-size: 80px;
+    animation: floating 3s ease-in-out infinite;
+}
+
+/* STUDENT PROFILE */
+
+.profile {
+    margin-top: 30px;
+    padding: 30px;
+    background: #111e34;
+    border: 1px solid #263c5c;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px #0003;
+}
+
+.profile h2 {
+    margin-bottom: 25px;
+    color: #55b8ff;
+    font-size: 26px;
+}
+
+.details {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.details div {
+    min-width: 0;
+    padding: 24px;
+    background: #1b2b47;
+    border: 1px solid #293f60;
+    border-radius: 14px;
+    overflow-wrap: anywhere;
+    transition: 0.3s ease;
+}
+
+.details div:hover {
+    transform: translateY(-5px);
+    border-color: #55b8ff;
+    box-shadow: 0 10px 25px #0004;
+}
+
+.details small {
+    color: #a7bad5;
+    font-size: 16px;
+}
+
+.details h3 {
+    margin-top: 12px;
+    font-size: 21px;
+    color: #ffffff;
+}
+
+/* LIVE CLASSROOM */
+
+.live-room {
+    margin-top: 30px;
+    padding: 45px 25px;
+    text-align: center;
+    background: linear-gradient(
+        135deg,
+        #122e50,
+        #172447,
+        #25204c
+    );
+    border: 1px solid #31527c;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px #0005;
+}
+
+.room-icon {
+    font-size: 65px;
+    margin-bottom: 15px;
+    animation: floating 3s ease-in-out infinite;
+}
+
+.room-label {
+    color: #55b8ff;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+
+.live-room h2 {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.room-description {
+    color: #b9c9df;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+#joinLiveBtn {
+    padding: 16px 35px;
+    background: linear-gradient(135deg, #1689e8, #6556e8);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px #1689e855;
+    transition: 0.3s ease;
+}
+
+#joinLiveBtn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px #1689e888;
+}
+
+#joinLiveBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.room-footer {
+    margin-top: 22px;
+    color: #a9bbd2;
+    font-size: 14px;
+}
+
+/* ANIMATIONS */
+
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* TABLET AND MOBILE */
+
+@media (max-width: 750px) {
+
+    .container {
+        width: 92%;
+        margin: 20px auto;
+    }
+
+    .topbar {
+        padding: 15px 4%;
+    }
+
+    .topbar h2 {
+        font-size: 15px;
+    }
+
+    .topbar button {
+        padding: 10px 14px;
+    }
+
+    .welcome {
+        padding: 25px;
+        min-height: 170px;
+    }
+
+    .welcome-icon {
+        font-size: 48px;
+    }
+
+    .welcome h1 {
+        font-size: 24px;
+    }
+
+    .profile {
+        padding: 22px;
+    }
+
+    .details {
+        grid-template-columns: 1fr;
+    }
+
+    .live-room {
+        padding: 35px 18px;
+    }
+
+    .live-room h2 {
+        font-size: 26px;
+    }
+
+    #joinLiveBtn {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 400px) {
+
+    .topbar h2 {
+        font-size: 13px;
+    }
+
+    .welcome-icon {
+        font-size: 38px;
+    }
+
+    .welcome {
+        padding: 20px;
+    }
+}
+
+/* REDUCE MOTION FOR ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
